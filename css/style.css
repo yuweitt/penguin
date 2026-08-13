@@ -1,0 +1,341 @@
+:root {
+  --navy: #7c6a9c;
+  --navy-deep: #5a4b7a;
+  --gold: #ffb17a;
+  --gold-light: #ffd9a0;
+  --rose: #ff9eb5;
+  --rose-deep: #ff6f91;
+  --cream: #fff6ef;
+  --bg-1: #ffe5ec;
+  --bg-2: #fff8f0;
+  --bg-3: #e8f9f3;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background: linear-gradient(160deg, var(--bg-1) 0%, var(--bg-2) 45%, var(--bg-3) 100%);
+  color: var(--navy-deep);
+  font-family: "Baloo 2", "PingFang TC", "Microsoft JhengHei", sans-serif;
+  overflow-x: hidden;
+}
+
+#app {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+#app.fonts-ready {
+  opacity: 1;
+}
+
+.screen {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  max-width: 560px;
+  width: 100%;
+  animation: fadeIn 0.6s ease;
+}
+
+.screen.active {
+  display: flex;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes bob {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-4px) rotate(8deg);
+  }
+}
+
+.ornament {
+  font-size: 1.5rem;
+  color: var(--rose-deep);
+  letter-spacing: 0.5em;
+  margin-bottom: 8px;
+  animation: bob 2.2s ease-in-out infinite;
+  display: inline-block;
+}
+
+h1 {
+  font-family: "ZCOOL KuaiLe", "Baloo 2", sans-serif;
+  font-weight: 400;
+  font-size: 2.3rem;
+  color: var(--rose-deep);
+  margin: 0 0 8px;
+  letter-spacing: 0.02em;
+  text-shadow: 2px 2px 0 #fff;
+}
+
+h2 {
+  font-family: "ZCOOL KuaiLe", "Baloo 2", sans-serif;
+  font-weight: 400;
+  font-size: 1.7rem;
+  color: var(--rose-deep);
+  margin: 0 0 10px;
+  text-shadow: 1.5px 1.5px 0 #fff;
+}
+
+.subtitle {
+  color: var(--navy);
+  margin: 0 0 28px;
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+
+#code-form {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+#code-input {
+  background: #ffffff;
+  border: 2px solid var(--rose);
+  color: var(--navy-deep);
+  font-family: "Baloo 2", sans-serif;
+  font-weight: 700;
+  font-size: 1.4rem;
+  letter-spacing: 0.5em;
+  text-align: center;
+  width: 200px;
+  padding: 10px 14px;
+  border-radius: 16px;
+  outline: none;
+}
+
+#code-input:focus {
+  box-shadow: 0 0 0 3px var(--gold-light);
+  border-color: var(--rose-deep);
+}
+
+button {
+  background: linear-gradient(180deg, var(--rose), var(--rose-deep));
+  border: none;
+  color: #ffffff;
+  font-family: "Baloo 2", sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  padding: 10px 26px;
+  border-radius: 999px;
+  cursor: pointer;
+  letter-spacing: 0.03em;
+  box-shadow: 0 3px 0 var(--rose-deep), 0 6px 14px rgba(255, 111, 145, 0.35);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+button:hover {
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 5px 0 var(--rose-deep), 0 8px 18px rgba(255, 111, 145, 0.4);
+}
+
+button:active {
+  transform: translateY(1px) scale(0.98);
+  box-shadow: 0 1px 0 var(--rose-deep), 0 3px 8px rgba(255, 111, 145, 0.35);
+}
+
+.error {
+  color: var(--rose-deep);
+  min-height: 1.2em;
+  font-weight: 600;
+}
+
+.hint {
+  color: rgba(90, 75, 122, 0.65);
+  font-size: 0.9rem;
+  margin-top: 18px;
+}
+
+.hint strong {
+  color: var(--rose-deep);
+  letter-spacing: 0.15em;
+}
+
+#screen-game {
+  max-width: 520px;
+}
+
+#hud {
+  width: 480px;
+  max-width: 92vw;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  color: var(--rose-deep);
+  font-family: "Baloo 2", sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+}
+
+#game-canvas {
+  border: 3px solid var(--rose);
+  border-radius: 12px;
+  background: var(--cream);
+  image-rendering: pixelated;
+  max-width: 92vw;
+  height: auto;
+  touch-action: none;
+}
+
+#game-instructions {
+  color: rgba(90, 75, 122, 0.7);
+  font-size: 0.9rem;
+  margin-top: 10px;
+}
+
+.reveal-photo {
+  display: block;
+  width: 100%;
+  max-width: 220px;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  border-radius: 18px;
+  border: 4px solid #ffffff;
+  box-shadow: 0 6px 18px rgba(255, 111, 145, 0.28);
+  margin: 4px 0 16px;
+}
+
+.reveal-photo.hidden {
+  display: none;
+}
+
+.reveal-photo-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 220px;
+  aspect-ratio: 3 / 4;
+  border-radius: 18px;
+  border: 3px dashed var(--rose);
+  background: rgba(255, 255, 255, 0.5);
+  color: rgba(90, 75, 122, 0.55);
+  font-weight: 600;
+  margin: 4px 0 16px;
+}
+
+.reveal-photo-placeholder.hidden {
+  display: none;
+}
+
+.reveal-note {
+  color: var(--navy-deep);
+  line-height: 1.7;
+  margin: 0 0 18px;
+  font-size: 1.02rem;
+}
+
+.reveal-note:empty {
+  display: none;
+}
+
+#message-hint:empty {
+  display: none;
+}
+
+#message-text,
+#intro-desc {
+  color: var(--navy-deep);
+  line-height: 1.6;
+  margin: 0 0 22px;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 248, 240, 0.92);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  border-radius: 10px;
+}
+
+.overlay.hidden {
+  display: none;
+}
+
+#screen-game {
+  position: relative;
+}
+
+.canvas-wrap {
+  position: relative;
+  display: inline-block;
+}
+
+.touch-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin-top: 14px;
+}
+
+.touch-controls.hidden {
+  display: none;
+}
+
+.ctrl-btn {
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  font-size: 1.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  user-select: none;
+  touch-action: none;
+  background: linear-gradient(180deg, var(--gold-light), var(--gold));
+  box-shadow: 0 3px 0 #e8935c, 0 6px 12px rgba(232, 147, 92, 0.3);
+}
+
+.ctrl-btn-strike {
+  width: 68px;
+  height: 68px;
+  font-size: 1.7rem;
+  background: linear-gradient(180deg, var(--rose), var(--rose-deep));
+  box-shadow: 0 3px 0 var(--rose-deep), 0 6px 12px rgba(255, 111, 145, 0.35);
+}
+
+.ctrl-btn-jump {
+  background: linear-gradient(180deg, #e8f9f3, #b8f2e6);
+  box-shadow: 0 3px 0 #7fd8c4, 0 6px 12px rgba(127, 216, 196, 0.35);
+}
+
+.ctrl-btn:active {
+  transform: scale(0.94);
+}
+
+.ctrl-btn.hidden {
+  display: none;
+}

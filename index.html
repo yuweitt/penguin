@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>小小遊樂園</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&family=Baloo+2:wght@400;600;700&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div id="app">
+    <section id="screen-gate" class="screen active">
+      <div class="ornament">&#10022;</div>
+      <h1>小小遊樂園</h1>
+      <p class="subtitle">輸入通關密碼，一起展開這趟小旅程吧！</p>
+      <form id="code-form">
+        <input
+          id="code-input"
+          type="text"
+          inputmode="numeric"
+          pattern="[0-9]*"
+          maxlength="5"
+          autocomplete="off"
+          placeholder="• • • • •"
+        />
+        <button type="submit">進入</button>
+      </form>
+      <p id="code-error" class="error"></p>
+    </section>
+
+    <section id="screen-intro" class="screen">
+      <div class="ornament">&#10022;</div>
+      <h2 id="intro-title"></h2>
+      <p id="intro-desc"></p>
+      <button id="intro-start">開始</button>
+    </section>
+
+    <section id="screen-game" class="screen">
+      <div id="hud">
+        <span id="hud-title"></span>
+        <span id="hud-score"></span>
+      </div>
+      <div class="canvas-wrap">
+        <canvas id="game-canvas" width="480" height="640"></canvas>
+        <div id="game-overlay" class="overlay hidden">
+          <h2 id="overlay-title"></h2>
+          <button id="overlay-retry">再試一次</button>
+        </div>
+      </div>
+      <div id="touch-controls" class="touch-controls hidden">
+        <button id="btn-left" class="ctrl-btn" aria-label="往左走">&#9664;</button>
+        <button id="btn-jump" class="ctrl-btn ctrl-btn-jump" aria-label="跳躍">&#9650;</button>
+        <button id="btn-strike" class="ctrl-btn ctrl-btn-strike" aria-label="攻擊">&#9876;</button>
+        <button id="btn-right" class="ctrl-btn" aria-label="往右走">&#9654;</button>
+      </div>
+      <p id="game-instructions"></p>
+    </section>
+
+    <section id="screen-message" class="screen">
+      <div class="ornament">&#10022;</div>
+      <h2 id="message-heading"></h2>
+      <p id="message-text"></p>
+      <img id="message-photo" class="reveal-photo hidden" alt="" />
+      <div id="message-photo-placeholder" class="reveal-photo-placeholder hidden">照片放這裡</div>
+      <p id="message-note" class="reveal-note"></p>
+      <p id="message-hint" class="hint"></p>
+      <button id="message-continue">回去輸入密碼</button>
+    </section>
+  </div>
+
+  <script src="js/config.js"></script>
+  <script src="js/pixelart.js"></script>
+  <script src="js/game-flappy.js"></script>
+  <script src="js/game-straw.js"></script>
+  <script src="js/game-mario.js"></script>
+  <script src="js/game-balloon.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
