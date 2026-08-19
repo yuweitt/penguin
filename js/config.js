@@ -11,10 +11,10 @@ const CONFIG = {
   // type it in at the gate screen herself before the next game starts.
   codes: {
     start: "54517",
-    afterOpening: "99821",
-    afterFlappy: "01224",
-    afterStraw: "52517",
-    afterMario: "44444",
+    afterOpening: "01224",
+    afterFlappy: "52517",
+    afterStraw: "17322",
+    afterMario: "26821",
   },
 
   // Order of stages, driven by the codes above. "opening" is not a game —
