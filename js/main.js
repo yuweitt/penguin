@@ -166,7 +166,7 @@
     const isLast = CONFIG.stageOrder[CONFIG.stageOrder.length - 1] === stage;
     let text = revealMessageFor(stage);
     if (isLast) {
-      text += " 每一根柱子、每一階樓梯、每一次忍耐，都值得——因為妳值得更多更多。生日快樂，我的寶貝。";
+      text += " 每一根柱子、每一階樓梯、每一次忍耐，都是企企在祝你生日快樂呦！";
     }
     showMessageScreen({
       heading: isLast ? "生日快樂！" : "過關了！",
@@ -186,7 +186,7 @@
       case "mario":
         return "妳一次次跌下去又爬回來，終於順利登頂了！";
       case "balloon":
-        return "妳一發發瞄準，把企鵝氣球通通打了下來！";
+        return "恭喜你成功通過企企的考驗！";
       default:
         return "";
     }

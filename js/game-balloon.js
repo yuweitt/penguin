@@ -55,7 +55,7 @@ const GameBalloon = (() => {
       balloons.push({
         baseX,
         x: baseX,
-        y: H + BALLOON_R + 20,
+        y: -BALLOON_R - 20,
         r: BALLOON_R,
         speed: RISE_MIN + Math.random() * (RISE_MAX - RISE_MIN),
         swaySpeed: 1.2 + Math.random() * 1.0,
@@ -90,10 +90,10 @@ const GameBalloon = (() => {
       }
 
       for (const b of balloons) {
-        b.y -= b.speed * dt;
+        b.y += b.speed * dt;
         b.x = b.baseX + Math.sin(elapsed * b.swaySpeed + b.swayPhase) * SWAY_AMPLITUDE;
       }
-      balloons = balloons.filter((b) => b.y + b.r > 0);
+      balloons = balloons.filter((b) => b.y - b.r < H);
 
       for (const p of projectiles) {
         p.x += p.vx * dt;
