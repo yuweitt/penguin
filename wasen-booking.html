@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>栗林公園 和船預約小幫手</title>
+<style>
+  body { font-family: system-ui, sans-serif; max-width: 480px; margin: 0 auto; padding: 16px; background: #f6f5f1; color: #222; }
+  h1 { font-size: 1.25rem; }
+  fieldset { border: 1px solid #ccc; border-radius: 10px; margin: 0 0 14px; padding: 10px 14px 14px; background: #fff; }
+  legend { font-weight: 600; padding: 0 6px; }
+  label { display: block; margin-top: 10px; font-size: .9rem; }
+  input, select { width: 100%; box-sizing: border-box; font-size: 1rem; padding: 8px; margin-top: 4px; border: 1px solid #bbb; border-radius: 6px; }
+  .row { display: flex; gap: 8px; }
+  .row > label { flex: 1; }
+  button { width: 100%; font-size: 1.05rem; padding: 12px; border: 0; border-radius: 8px; margin-top: 8px; cursor: pointer; }
+  .primary { background: #1f6f43; color: #fff; }
+  .secondary { background: #e2e0d8; color: #222; }
+  .note { font-size: .8rem; color: #666; margin-top: 8px; }
+  #msg { color: #b00020; font-size: .9rem; min-height: 1.2em; }
+</style>
+</head>
+<body>
+<h1>🚣 栗林公園 和船預約小幫手</h1>
+
+<fieldset>
+  <legend>班次</legend>
+  <label>日期 <input type="date" id="date"></label>
+  <label>時間 <select id="slot"></select></label>
+  <button type="button" class="secondary" id="check">查看這天的空位</button>
+</fieldset>
+
+<fieldset>
+  <legend>個人資料（會存在這個瀏覽器裡）</legend>
+  <label>お名前（漢字/英文） <input id="name" autocomplete="name"></label>
+  <label>ふりがな <input id="name_kana"></label>
+  <label>電話（半形數字） <input id="tel" inputmode="tel" autocomplete="tel"></label>
+  <label>Email <input id="email" type="email" autocomplete="email"></label>
+  <div class="row">
+    <label>大人(含高中) <input id="adult" type="number" min="0" value="2"></label>
+    <label>國中 <input id="junior" type="number" min="0" value="0"></label>
+    <label>小學/3歲+ <input id="child" type="number" min="0" value="0"></label>
+  </div>
+</fieldset>
+
+<div id="msg"></div>
+<button type="button" class="primary" id="go">填好送到官網確認頁 →</button>
+<p class="note">
+  會跳到官網的「確認」畫面，請檢查內容後<strong>自己按確定</strong>才會完成預約。<br>
+  開船前 30 分鐘要到窗口買票。每人每天最多 2 班。17:30 以後的夜間班不能帶未就學兒童。
+</p>
+
+<!-- Real form posted to the official site. Shift_JIS because the site uses it. -->
+<form id="real" method="post" action="https://www2.fitsite.ne.jp/cast/ritsurin/yoyaku.php" accept-charset="Shift_JIS" style="display:none">
+  <input name="send" value="on">
+  <input name="ydate"><input name="ybrd">
+  <input name="name"><input name="name_kana"><input name="tel">
+  <input name="email"><input name="email2">
+  <input name="adult"><input name="junior"><input name="child">
+  <input name="place_check" value="1">
+</form>
+
+<script>
+const BASE = "https://www2.fitsite.ne.jp/cast/ritsurin/";
+const FIELDS = ["name", "name_kana", "tel", "email", "adult", "junior", "child"];
+const $ = id => document.getElementById(id);
+
+// Boat numbers: day boats 1-31 run 09:00-16:30, night boats 41-51 run 17:30-20:00, every 15 min.
+function addSlots(firstNo, startMin, count, sel) {
+  for (let i = 0; i < count; i++) {
+    const m = startMin + i * 15;
+    const t = String(Math.floor(m / 60)).padStart(2, "0") + ":" + String(m % 60).padStart(2, "0");
+    sel.add(new Option(`${t}（第 ${firstNo + i} 班）`, firstNo + i));
+  }
+}
+addSlots(1, 9 * 60, 31, $("slot"));
+addSlots(41, 17 * 60 + 30, 11, $("slot"));
+
+// Restore saved data.
+const saved = JSON.parse(localStorage.getItem("wasen") || "{}");
+FIELDS.concat(["date", "slot"]).forEach(k => { if (saved[k] != null) $(k).value = saved[k]; });
+if (!$("date").value) $("date").value = "2026-11-28";
+if (!saved.slot) $("slot").value = "19";
+
+function save() {
+  const d = {};
+  FIELDS.concat(["date", "slot"]).forEach(k => d[k] = $(k).value.trim());
+  localStorage.setItem("wasen", JSON.stringify(d));
+  return d;
+}
+document.querySelectorAll("input,select").forEach(el => el.addEventListener("change", save));
+
+const siteDate = () => $("date").value.replaceAll("-", "/");
+
+$("check").onclick = () => {
+  if (!$("date").value) return;
+  window.open(BASE + "day.php?d=" + siteDate(), "_blank");
+};
+
+$("go").onclick = () => {
+  const d = save();
+  const missing = ["date", "name", "name_kana", "tel", "email"].filter(k => !d[k]);
+  if (missing.length) { $("msg").textContent = "還有欄位沒填。"; return; }
+  if ((+d.adult || 0) < 1) { $("msg").textContent = "至少要 1 位大人。"; return; }
+  if (+d.slot >= 41 && (+d.child || 0) > 0) {
+    if (!confirm("夜間班不能帶未就學兒童。小孩都是小學生嗎？")) return;
+  }
+  $("msg").textContent = "";
+  const f = $("real");
+  f.ydate.value = siteDate();
+  f.ybrd.value = d.slot;
+  ["name", "name_kana", "tel", "email", "adult", "junior", "child"].forEach(k => f[k].value = d[k] || "0");
+  f.email2.value = d.email;
+  f.submit();
+};
+</script>
+</body>
+</html>
